@@ -19,8 +19,8 @@ public class CategoryControllerTest {
     public static final String DESCRIPTION = "Cat1";
 
     WebTestClient webTestClient;
-    CategoryRepository categoryRepository;
-    CategoryController categoryController;
+    private CategoryRepository categoryRepository;
+    private CategoryController categoryController;
 
     @BeforeEach
     public void setUp() throws Exception {
@@ -37,7 +37,7 @@ public class CategoryControllerTest {
                 Category.builder().description("Cat2").build()));
 
         webTestClient.get()
-            .uri("/api/v1/categories/")
+            .uri(CategoryController.BASE_URL)
             .exchange()
             .expectBodyList(Category.class)
             .hasSize(2);
@@ -49,7 +49,7 @@ public class CategoryControllerTest {
             .willReturn(Mono.just(Category.builder().description(DESCRIPTION).build()));
 
         webTestClient.get()
-            .uri("/api/v1/categories/asd")
+            .uri(CategoryController.BASE_URL + "/asd")
             .exchange()
             .expectBody(Category.class)
             .value(Category::getDescription, equalTo(DESCRIPTION));
