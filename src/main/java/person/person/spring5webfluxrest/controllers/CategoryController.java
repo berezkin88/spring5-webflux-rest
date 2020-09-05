@@ -1,11 +1,14 @@
 package person.person.spring5webfluxrest.controllers;
 
+import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import person.person.spring5webfluxrest.domain.Category;
 import person.person.spring5webfluxrest.repositories.CategoryRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+
+import java.util.concurrent.Flow;
 
 @RestController
 @RequestMapping(CategoryController.BASE_URL)
@@ -28,5 +31,11 @@ public class CategoryController {
     @ResponseStatus(HttpStatus.OK)
     public Mono<Category> getById(@PathVariable String id) {
         return categoryRepository.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<Void> create(@RequestBody Publisher<Category> categoryStream) {
+        return categoryRepository.saveAll(categoryStream).then();
     }
 }
