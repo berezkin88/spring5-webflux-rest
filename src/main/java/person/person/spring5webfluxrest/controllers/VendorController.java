@@ -1,5 +1,6 @@
 package person.person.spring5webfluxrest.controllers;
 
+import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 import person.person.spring5webfluxrest.domain.Category;
@@ -30,5 +31,11 @@ public class VendorController {
     @ResponseStatus(HttpStatus.OK)
     public Mono<Vendor> getById(@PathVariable String id) {
         return vendorRepository.findById(id);
+    }
+
+    @PostMapping
+    @ResponseStatus(HttpStatus.CREATED)
+    public Mono<Void> create(@RequestBody Publisher<Vendor> categoryStream) {
+        return vendorRepository.saveAll(categoryStream).then();
     }
 }
