@@ -89,10 +89,7 @@ public class CategoryControllerTest {
     @Test
     void patch() {
         given(categoryRepository.findById(anyString()))
-            .willReturn(Mono.just(Category.builder().description("Some description").build()));
-
-        given(categoryRepository.save(any(Category.class)))
-            .willReturn(Mono.just(Category.builder().build()));
+            .willReturn(Mono.just(Category.builder().description(DESCRIPTION).build()));
 
         Mono<Category> categoryToSaveMono = Mono.just(Category.builder().description("Some cat").build());
 
@@ -104,5 +101,22 @@ public class CategoryControllerTest {
             .isOk();
 
         verify(categoryRepository, times(1)).save(any(Category.class));
+    }
+
+    @Test
+    void patchNoChanges() {
+        given(categoryRepository.findById(anyString()))
+            .willReturn(Mono.just(Category.builder().description(DESCRIPTION).build()));
+
+        Mono<Category> categoryToSaveMono = Mono.just(Category.builder().description(DESCRIPTION).build());
+
+        webTestClient.patch()
+            .uri(CategoryController.BASE_URL + "/asd")
+            .body(categoryToSaveMono, Category.class)
+            .exchange()
+            .expectStatus()
+            .isOk();
+
+        verify(categoryRepository, never()).save(any(Category.class));
     }
 }
