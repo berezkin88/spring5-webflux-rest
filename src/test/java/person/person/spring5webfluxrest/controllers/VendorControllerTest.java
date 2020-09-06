@@ -73,4 +73,17 @@ class VendorControllerTest {
             .expectStatus()
             .isCreated();
     }
+
+    @Test
+    void update() {
+        BDDMockito.given(vendorRepository.save(any(Vendor.class)))
+            .willReturn(Mono.just(Vendor.builder().build()));
+
+        webTestClient.put()
+            .uri(VendorController.BASE_URL + "/asd")
+            .body(Mono.just(Category.builder().build()), Vendor.class)
+            .exchange()
+            .expectStatus()
+            .isOk();
+    }
 }
