@@ -3,7 +3,6 @@ package person.person.spring5webfluxrest.controllers;
 import org.reactivestreams.Publisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
-import person.person.spring5webfluxrest.domain.Category;
 import person.person.spring5webfluxrest.domain.Vendor;
 import person.person.spring5webfluxrest.repositories.VendorRepository;
 import reactor.core.publisher.Flux;
@@ -22,13 +21,11 @@ public class VendorController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public Flux<Vendor> list() {
         return vendorRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public Mono<Vendor> getById(@PathVariable String id) {
         return vendorRepository.findById(id);
     }

@@ -8,8 +8,6 @@ import person.person.spring5webfluxrest.repositories.CategoryRepository;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-import java.util.concurrent.Flow;
-
 @RestController
 @RequestMapping(CategoryController.BASE_URL)
 public class CategoryController {
@@ -22,13 +20,11 @@ public class CategoryController {
     }
 
     @GetMapping
-    @ResponseStatus(HttpStatus.OK)
     public Flux<Category> list() {
         return categoryRepository.findAll();
     }
 
     @GetMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public Mono<Category> getById(@PathVariable String id) {
         return categoryRepository.findById(id);
     }
@@ -40,7 +36,6 @@ public class CategoryController {
     }
 
     @PutMapping("/{id}")
-    @ResponseStatus(HttpStatus.OK)
     public Mono<Category> update(@PathVariable String id, @RequestBody Category category) {
         category.setId(id);
         return categoryRepository.save(category);
